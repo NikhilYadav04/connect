@@ -15,6 +15,8 @@ class DeveloperCard extends StatelessWidget {
   final double rating;
   final int reviewCount;
   final String profileImageUrl;
+  final String languages;
+  final String experience;
 
   const DeveloperCard({
     Key? key,
@@ -26,6 +28,8 @@ class DeveloperCard extends StatelessWidget {
     required this.rating,
     required this.reviewCount,
     required this.profileImageUrl,
+    required this.languages, // NEW
+    required this.experience, // NEW
   }) : super(key: key);
 
   @override
@@ -33,8 +37,12 @@ class DeveloperCard extends StatelessWidget {
     return Center(
       child: Container(
         margin: EdgeInsets.only(bottom: 20),
-        padding:
-            EdgeInsets.symmetric(horizontal: sw * 0.038, vertical: sh * 0.025),
+        padding: EdgeInsets.only(
+            right: sw * 0.038,
+            top: sh * 0.018,
+            bottom: sh * 0.018,
+            left: sh * 0.012),
+        // EdgeInsets.symmetric(horizontal: sw * 0.038, vertical: sh * 0.02),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -53,15 +61,58 @@ class DeveloperCard extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Padding(
-                padding: EdgeInsets.only(bottom: 5, right: sw * 0.029),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: Image.network(
-                    profileImageUrl,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+                  padding: EdgeInsets.only(right: sw * 0.029),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // TOP: Profile Image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(60),
+                        child: Image.network(
+                          profileImageUrl,
+                          height: sh *
+                              0.08, // Give explicit height/width for consistency
+                          width: sh * 0.08,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 47,
+                      ),
+
+                      // BOTTOM: Rating Section
+                      Column(
+                        children: [
+                          FittedBox(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(
+                                5,
+                                (index) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: sh * 0.017,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 3),
+                          FittedBox(
+                            child: Text(
+                              '$rating ($reviewCount)',
+                              style: textStyle2.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: sh * 0.016,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
             ),
 
             //* Name, Subtitle, Rating, Rate
@@ -89,81 +140,85 @@ class DeveloperCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Row(
-                        children: List.generate(
-                          5,
-                          (index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: sh * 0.022,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 6),
-                      Text(
-                        '$rating ($reviewCount)',
-                        style: textStyle2.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: sh * 0.015,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "${languages}",
+                    style: textStyle2.copyWith(
+                      letterSpacing: 0.5,
+                      color: Colors.grey.shade800,
+                      fontSize: sh * 0.017,
+                    ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    "${experience}",
+                    style: textStyle2.copyWith(
+                      letterSpacing: 0.5,
+                      color: Colors.grey.shade800,
+                      fontSize: sh * 0.017,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '\$$rate/min',
-                        style: textStyle2.copyWith(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: sh * 0.022,
+                      FittedBox(
+                        child: Text(
+                          '\$$rate/min',
+                          style: textStyle2.copyWith(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                            fontSize: sh * 0.022,
+                          ),
                         ),
                       ),
                       Row(
                         children: [
+                          // ElevatedButton.icon(
+                          //   onPressed: () {},
+                          //   icon: SvgPicture.asset(
+                          //     "assets/svg/video_white.svg",
+                          //     height: sh * 0.02,
+                          //   ),
+                          //   label: const Text("Video",
+                          //       style: TextStyle(
+                          //           fontFamily: "Jakarta-Medium",
+                          //           fontWeight: FontWeight.bold)),
+                          //   style: ElevatedButton.styleFrom(
+                          //     backgroundColor: AppColors.colorPurple,
+                          //     foregroundColor: Colors.white,
+                          //     padding: EdgeInsets.symmetric(
+                          //         horizontal: sw * 0.02, vertical: 9),
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(12),
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(width: sw * 0.021),
                           ElevatedButton.icon(
                             onPressed: () {},
                             icon: SvgPicture.asset(
-                              "assets/svg/video_white.svg",
-                              height: sh * 0.02,
-                            ),
-                            label: const Text("Video",
-                                style: TextStyle(
-                                    fontFamily: "Jakarta-Medium",
-                                    fontWeight: FontWeight.bold)),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.colorPurple,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: sw * 0.02, vertical: 9),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: sw * 0.021),
-                          ElevatedButton.icon(
-                            onPressed: () {},
-                            icon: SvgPicture.asset(
+                              color: Colors.white,
                               "assets/svg/chat_black.svg",
                               height: sh * 0.02,
                             ),
-                            label: const Text(
+                            label: Text(
                               "Chat",
                               style: TextStyle(
+                                  fontSize: sh * 0.018,
                                   fontFamily: "Jakarta-Medium",
                                   fontWeight: FontWeight.bold),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[200],
-                              foregroundColor: Colors.black87,
+                              backgroundColor: AppColors.colorPurple,
+                              foregroundColor: Colors.white,
+                              // backgroundColor: Colors.grey[200],
+                              // foregroundColor: Colors.black87,
                               padding: EdgeInsets.symmetric(
-                                  horizontal: sw * 0.02, vertical: 8),
+                                  horizontal: sw * 0.04, vertical: 8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),

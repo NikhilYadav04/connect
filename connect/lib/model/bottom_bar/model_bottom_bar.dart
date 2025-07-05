@@ -7,14 +7,14 @@ final List<BottomNavigationBarItem> bottomItems = [
     label: 'Home',
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.search_outlined),
-    activeIcon: Icon(Icons.search),
-    label: 'Explore',
+    icon: Icon(Icons.school),
+    activeIcon: Icon(Icons.school),
+    label: 'Experts',
   ),
   BottomNavigationBarItem(
-    icon: Icon(Icons.history),
-    activeIcon: Icon(Icons.history),
-    label: 'History',
+    icon: Icon(Icons.help_outline),
+    activeIcon: Icon(Icons.help_outline),
+    label: "FAQ's",
   ),
   BottomNavigationBarItem(
     icon: Icon(Icons.person_outline),

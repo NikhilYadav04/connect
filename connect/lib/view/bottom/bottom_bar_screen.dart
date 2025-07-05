@@ -1,6 +1,7 @@
 import 'package:connect/core/constants/colors.dart';
 import 'package:connect/core/constants/fontfamily.dart';
 import 'package:connect/model/bottom_bar/model_bottom_bar.dart';
+import 'package:connect/view/experts/screen/experts_category_screen.dart';
 import 'package:connect/view/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +19,9 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   //* List of pages to display
   final List<Widget> _pages = [
     HomeScreen(),
-    Center(child: Text('Home Screen', style: TextStyle(fontSize: 24))),
+    ExpertsCategoryScreen(),
     Center(child: Text('Search Screen', style: TextStyle(fontSize: 24))),
     Center(child: Text('Add Screen', style: TextStyle(fontSize: 24))),
-   
   ];
 
   @override
@@ -36,7 +36,7 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
 
       //* Bottom navigation bar
       bottomNavigationBar: SizedBox(
-        height: sh * 0.095,
+        height: sh * 0.085,
         child: Theme(
           data: Theme.of(context).copyWith(
             splashFactory: NoSplash.splashFactory,
@@ -51,16 +51,16 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
                 _currentIndex = index;
               });
             },
-            iconSize: sh * 0.038,
+            iconSize: sh * 0.032,
             unselectedItemColor: Colors.grey.shade700,
             unselectedLabelStyle: textStyle3.copyWith(
               color: Colors.black,
-              fontSize: sh * 0.017,
+              fontSize: sh * 0.016,
               fontWeight: FontWeight.bold,
             ),
             selectedLabelStyle: textStyle3.copyWith(
               color: AppColors.colorPurple,
-              fontSize: sh * 0.017,
+              fontSize: sh * 0.016,
               fontWeight: FontWeight.bold,
             ),
             backgroundColor: Colors.white,

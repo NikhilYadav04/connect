@@ -6,16 +6,17 @@ import 'package:flutter_svg/svg.dart';
 Widget headerTitle(double sh, double sw) {
   return Row(
     children: [
-      Container(
-        height: sh * 0.044,
-        width: sw * 0.098,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40), color: Colors.white),
-        child: Center(
-          child: SvgPicture.asset(
-            "assets/svg/group.svg",
-            width: sh * 0.026,
-            height: sh * 0.026,
+      ClipOval(
+        child: Container(
+          height: sh * 0.044,
+          width: sh * 0.044, // make sure width = height for perfect circle
+          color: Colors.white,
+          child: Center(
+            child: SvgPicture.asset(
+              "assets/svg/group.svg",
+              width: sh * 0.026,
+              height: sh * 0.026,
+            ),
           ),
         ),
       ),
@@ -31,20 +32,21 @@ Widget headerTitle(double sh, double sw) {
             fontWeight: FontWeight.bold),
       ),
       Spacer(),
-      Container(
-        height: sh * 0.044,
-        width: sw * 0.098,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            color: Colors.grey.withOpacity(0.45)),
-        child: Center(
-          child: SvgPicture.asset(
-            "assets/svg/bell.svg",
-            width: sh * 0.026,
-            height: sh * 0.026,
+      ClipOval(
+        child: Container(
+          height: sh * 0.044,
+          width:
+              sh * 0.044, // if you want a perfect circle, set this = sh * 0.044
+          color: Colors.grey.withOpacity(0.45),
+          child: Center(
+            child: SvgPicture.asset(
+              "assets/svg/bell.svg",
+              width: sh * 0.026,
+              height: sh * 0.026,
+            ),
           ),
         ),
-      ),
+      )
     ],
   );
 }

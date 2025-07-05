@@ -1,8 +1,8 @@
-import 'package:connect/app.dart';
 import 'package:flutter/material.dart';
+import 'package:connect/app.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  //runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
+   runApp(const MyApp());
 }
-
-

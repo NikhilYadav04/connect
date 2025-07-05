@@ -1,4 +1,6 @@
+import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:connect/view/bottom/bottom_bar_screen.dart';
+import 'package:connect/view/experts/screen/expert_detail.dart';
 import 'package:connect/view/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -80,7 +82,40 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/bottom-bar-screen':
       page = BottomBarScreen();
       break;
-
+    case '/expert-detail-screen':
+      final expert = args?['expert'] ??
+          ExpertDetailModel(
+            name: "John Doe",
+            title: "Senior Developer at ExampleCorp",
+            qualification: "M.S. in Computer Science · Example University",
+            profileImageUrl: "https://randomuser.me/api/portraits/men/45.jpg",
+            expertise: [
+              "Resume Review",
+              "Interview Handling",
+              "Career Guidance"
+            ],
+            about:
+                "Experienced senior developer specializing in career coaching and tech interviews. Passionate about helping others succeed.",
+            overallRating: 4.9,
+            reviews: [
+              RatingExpertDetailsModel(
+                name: "Alice",
+                profileImageUrl:
+                    "https://randomuser.me/api/portraits/women/10.jpg",
+                rating: 5,
+                review: "Very helpful and insightful advice!",
+              ),
+              RatingExpertDetailsModel(
+                name: "Bob",
+                profileImageUrl:
+                    "https://randomuser.me/api/portraits/men/11.jpg",
+                rating: 4,
+                review: "Great experience, would recommend.",
+              ),
+            ],
+          );
+      page = ExpertDetailPage(expert: expert);
+      break;
     default:
       page = HomeScreen();
       break;

@@ -62,8 +62,8 @@ class CategorySlider extends StatelessWidget {
                 final item = items[index];
                 return Container(
                   width: sw * 0.225,
-                  margin: EdgeInsets.only(right: sw * 0.035, bottom: 15),
-                  padding: const EdgeInsets.all(6),
+                  margin: EdgeInsets.only(right: sw * 0.035, bottom: sh*0.015),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     color: item.bgColor,
