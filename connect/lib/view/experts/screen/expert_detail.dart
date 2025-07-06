@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:flutter/material.dart';
 
-
 class ExpertDetailPage extends StatefulWidget {
   final ExpertDetailModel expert;
 
@@ -33,10 +32,23 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
     final visibleReviews = reviews.take(itemCount).toList();
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+              size: h * 0.035,
+            )),
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: w * 0.05, vertical: h * 0.02),
+          padding: EdgeInsets.only(
+              left: w * 0.05, right: w * 0.05, bottom: h * 0.02),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -48,14 +60,14 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   child: CachedNetworkImage(
                     imageUrl: widget.expert.profileImageUrl,
                     fit: BoxFit.cover,
-                    placeholder: (_, __) => Center(child: CircularProgressIndicator()),
-                    errorWidget: (_, __, ___) => Icon(Icons.error, size: w * 0.1),
+                    placeholder: (_, __) =>
+                        Center(child: CircularProgressIndicator()),
+                    errorWidget: (_, __, ___) =>
+                        Icon(Icons.error, size: w * 0.1),
                   ),
                 ),
               ),
-
               SizedBox(height: h * 0.03),
-
               Text(
                 widget.expert.name,
                 style: TextStyle(
@@ -64,9 +76,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-
               SizedBox(height: h * 0.005),
-
               Text(
                 widget.expert.title,
                 maxLines: 2,
@@ -78,9 +88,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-
               SizedBox(height: h * 0.005),
-
               Text(
                 widget.expert.qualification,
                 textAlign: TextAlign.center,
@@ -90,9 +98,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   color: Colors.grey[800],
                 ),
               ),
-
               SizedBox(height: h * 0.03),
-
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -104,16 +110,12 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: h * 0.01),
-
               ...widget.expert.expertise.map((item) => Padding(
-                padding: EdgeInsets.only(bottom: h * 0.005),
-                child: _bulletText(item, fontSize(0.042)),
-              )),
-
+                    padding: EdgeInsets.only(bottom: h * 0.005),
+                    child: _bulletText(item, fontSize(0.042)),
+                  )),
               SizedBox(height: h * 0.03),
-
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -125,9 +127,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: h * 0.01),
-
               Text(
                 widget.expert.about,
                 style: TextStyle(
@@ -137,9 +137,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   height: 1.4,
                 ),
               ),
-
               SizedBox(height: h * 0.03),
-
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -151,14 +149,13 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ),
                 ),
               ),
-
               SizedBox(height: h * 0.01),
-
               Row(
                 children: [
                   ...List.generate(
                     5,
-                    (_) => Icon(Icons.star, color: Colors.amber, size: w * 0.06),
+                    (_) =>
+                        Icon(Icons.star, color: Colors.amber, size: w * 0.06),
                   ),
                   SizedBox(width: w * 0.02),
                   Text(
@@ -171,9 +168,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ),
                 ],
               ),
-
               SizedBox(height: h * 0.03),
-
               Column(
                 children: visibleReviews.map((review) {
                   return Padding(
@@ -183,7 +178,8 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                       children: [
                         CircleAvatar(
                           radius: w * 0.06,
-                          backgroundImage: CachedNetworkImageProvider(review.profileImageUrl),
+                          backgroundImage: CachedNetworkImageProvider(
+                              review.profileImageUrl),
                         ),
                         SizedBox(width: w * 0.03),
                         Expanded(
@@ -202,7 +198,8 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                               Row(
                                 children: List.generate(
                                   review.rating,
-                                  (_) => Icon(Icons.star, color: Colors.amber, size: w * 0.04),
+                                  (_) => Icon(Icons.star,
+                                      color: Colors.amber, size: w * 0.04),
                                 ),
                               ),
                               SizedBox(height: h * 0.005),
@@ -222,7 +219,6 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   );
                 }).toList(),
               ),
-
               GestureDetector(
                 onTap: () => setState(() => _isExpanded = !_isExpanded),
                 child: Row(
@@ -240,7 +236,8 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                       turns: _isExpanded ? 0.5 : 0,
                       duration: Duration(milliseconds: 300),
                       child: Padding(
-                        padding: EdgeInsets.only(top: !_isExpanded ? h * 0.005 : 0),
+                        padding:
+                            EdgeInsets.only(top: !_isExpanded ? h * 0.005 : 0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Icon(
@@ -254,18 +251,18 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ],
                 ),
               ),
-
               SizedBox(height: h * 0.03),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _actionCircle(Icons.videocam, "Video", width: w * 0.27, height: h * 0.05, onTap: () {}),
-                  _actionCircle(Icons.call, "Audio", width: w * 0.27, height: h * 0.05, onTap: () {}),
-                  _actionCircle(Icons.chat, "Text", width: w * 0.27, height: h * 0.05, onTap: () {}),
+                  _actionCircle(Icons.videocam, "Video",
+                      width: w * 0.27, height: h * 0.05, onTap: () {}),
+                  _actionCircle(Icons.call, "Audio",
+                      width: w * 0.27, height: h * 0.05, onTap: () {}),
+                  _actionCircle(Icons.chat, "Text",
+                      width: w * 0.27, height: h * 0.05, onTap: () {}),
                 ],
               ),
-
               SizedBox(height: h * 0.02),
             ],
           ),

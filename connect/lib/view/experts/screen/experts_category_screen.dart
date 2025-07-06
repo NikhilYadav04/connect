@@ -26,8 +26,8 @@ class _ExpertsCategoryScreenState extends State<ExpertsCategoryScreen> {
                 automaticallyImplyLeading: false,
                 toolbarHeight: sh * 0.074,
                 backgroundColor: AppColors.colorPurple,
-                floating: true,
-                snap: true,
+                //floating: true,
+                //snap: true,
                 centerTitle: true,
                 title: Align(
                   alignment: Alignment.center,
@@ -44,25 +44,27 @@ class _ExpertsCategoryScreenState extends State<ExpertsCategoryScreen> {
             ];
           },
           body: Container(
-              padding: EdgeInsets.symmetric(horizontal: sw * 0.04),
+              padding: EdgeInsets.symmetric(horizontal: sw * 0.025),
               child: GridView.builder(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                    EdgeInsets.symmetric(horizontal: sw*0.01, vertical: sh*0.025),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 16,
+                  mainAxisSpacing: 20,
                   crossAxisSpacing: 16,
-                  childAspectRatio: 3 / 4,
+                  childAspectRatio: 3 / 3.2,
                 ),
                 itemCount: categories.length,
                 itemBuilder: (context, index) {
                   final cat = categories[index];
                   return CategoryCard(
+                    width: sw,
+                    height: sh,
                     category: cat,
                     onTap: () {
                       // handle tap
                       debugPrint('Tapped ${cat.title}');
-                    },
+                    }, index: index,
                   );
                 },
               ),
