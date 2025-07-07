@@ -1,6 +1,7 @@
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:connect/view/bottom/bottom_bar_screen.dart';
 import 'package:connect/view/experts/screen/expert_detail.dart';
+import 'package:connect/view/experts/screen/expert_display_category_screen.dart';
 import 'package:connect/view/home/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -115,6 +116,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
             ],
           );
       page = ExpertDetailPage(expert: expert);
+      break;
+    case '/expert-display-category-screen':
+      final category = args?['category'] ?? "";
+      page = ExpertDisplayCategoryScreen(category: category);
       break;
     default:
       page = HomeScreen();

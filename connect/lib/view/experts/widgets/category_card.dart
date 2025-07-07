@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:connect/core/constants/fontfamily.dart';
+import 'package:connect/core/router/appRouter.dart';
 import 'package:flutter/material.dart';
 
 import 'package:connect/model/experts/category_card.dart';
@@ -44,9 +45,20 @@ class _CategoryCardState extends State<CategoryCard> {
     setState(() => _isPressed = true);
   }
 
-  void _onTapUp(TapUpDetails details) {
+  void _onTapUp(TapUpDetails details) async {
     setState(() => _isPressed = false);
-    widget.onTap?.call();
+    await Future.delayed(const Duration(milliseconds: 120));
+
+    Navigator.pushNamed(
+      context,
+      '/expert-display-category-screen',
+      arguments: {
+        'transition': TransitionType.fade,
+        'category': widget.category.titleMain,
+        'duration': 300,
+      },
+    );
+    //widget.onTap?.call();
   }
 
   void _onTapCancel() {
@@ -55,7 +67,8 @@ class _CategoryCardState extends State<CategoryCard> {
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = CategoryCard._baseColors[widget.index % CategoryCard._baseColors.length];
+    final baseColor = CategoryCard
+        ._baseColors[widget.index % CategoryCard._baseColors.length];
     final scale = _isPressed ? 0.95 : 1.0;
 
     return GestureDetector(
@@ -79,7 +92,7 @@ class _CategoryCardState extends State<CategoryCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Icon circle
+                //* Icon circle
                 Container(
                   decoration: BoxDecoration(
                     color: baseColor.shade100, // slightly darker
@@ -94,8 +107,10 @@ class _CategoryCardState extends State<CategoryCard> {
                     ),
                   ),
                 ),
+
                 SizedBox(height: widget.height * 0.012),
-                // Category title
+
+                //* Category title
                 Center(
                   child: Text(
                     widget.category.title,
@@ -108,7 +123,8 @@ class _CategoryCardState extends State<CategoryCard> {
                   ),
                 ),
                 Spacer(),
-                // Tagline
+
+                //* Tagline
                 Center(
                   child: Text(
                     widget.category.tagline,

@@ -1,17 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:connect/core/constants/fontfamily.dart';
 
+// ignore: must_be_immutable
 class SearchTextField extends StatelessWidget {
   final TextEditingController controller;
   final double verticalPadding;
   final double horizontalPadding;
+  String label = "Search experts, skills...";
 
-  const SearchTextField({
-    super.key,
+  SearchTextField({
+    Key? key,
     required this.controller,
     required this.verticalPadding,
     required this.horizontalPadding,
-  });
+    required this.label,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,7 @@ class SearchTextField extends StatelessWidget {
         ),
         floatingLabelBehavior: FloatingLabelBehavior.never,
         label: Text(
-          "Search experts, skills...",
+          label,
           style: textStyle2.copyWith(
             letterSpacing: 0.8,
             fontWeight: FontWeight.bold,

@@ -1,7 +1,9 @@
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect/core/constants/colors.dart';
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ExpertDetailPage extends StatefulWidget {
   final ExpertDetailModel expert;
@@ -47,55 +49,65 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(
-              left: w * 0.05, right: w * 0.05, bottom: h * 0.02),
+          padding: EdgeInsets.only(left: w * 0.05, right: w * 0.05),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: w * 0.36,
-                height: w * 0.36,
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                child: ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl: widget.expert.profileImageUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (_, __) =>
-                        Center(child: CircularProgressIndicator()),
-                    errorWidget: (_, __, ___) =>
-                        Icon(Icons.error, size: w * 0.1),
+              Center(
+                child: Container(
+                  width: w * 0.36,
+                  height: w * 0.36,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: ClipOval(
+                    child: CachedNetworkImage(
+                      imageUrl: widget.expert.profileImageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (_, __) => Center(
+                          child: SpinKitRotatingCircle(
+                        color: AppColors.colorPurple,
+                        size: 35,
+                      )),
+                      errorWidget: (_, __, ___) =>
+                          Icon(Icons.error, size: w * 0.1),
+                    ),
                   ),
                 ),
               ),
               SizedBox(height: h * 0.03),
-              Text(
-                widget.expert.name,
-                style: TextStyle(
-                  fontFamily: "Jakarta-Bold",
-                  fontSize: fontSize(0.065),
-                  fontWeight: FontWeight.bold,
+              Center(
+                child: Text(
+                  widget.expert.name,
+                  style: TextStyle(
+                    fontFamily: "Jakarta-Bold",
+                    fontSize: fontSize(0.065),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: h * 0.005),
-              Text(
-                widget.expert.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: "Jakarta-Medium",
-                  fontSize: fontSize(0.04),
-                  color: Colors.grey[800],
-                  fontWeight: FontWeight.w700,
+              Center(
+                child: Text(
+                  widget.expert.title,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: "Jakarta-Medium",
+                    fontSize: fontSize(0.04),
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               SizedBox(height: h * 0.005),
-              Text(
-                widget.expert.qualification,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: "Jakarta-Medium",
-                  fontSize: fontSize(0.035),
-                  color: Colors.grey[800],
+              Center(
+                child: Text(
+                  widget.expert.qualification,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: "Jakarta-Medium",
+                    fontSize: fontSize(0.035),
+                    color: Colors.grey[800],
+                  ),
                 ),
               ),
               SizedBox(height: h * 0.03),
@@ -110,12 +122,38 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ),
                 ),
               ),
-              SizedBox(height: h * 0.01),
-              ...widget.expert.expertise.map((item) => Padding(
-                    padding: EdgeInsets.only(bottom: h * 0.005),
-                    child: _bulletText(item, fontSize(0.042)),
-                  )),
-              SizedBox(height: h * 0.03),
+              SizedBox(height: h * 0.015),
+              Wrap(
+                spacing: w * 0.025,
+                runSpacing: h * 0.01,
+                alignment: WrapAlignment.start,
+                runAlignment: WrapAlignment.start,
+                crossAxisAlignment: WrapCrossAlignment.start,
+                children: widget.expert.expertise.map((item) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: w * 0.04,
+                      vertical: h * 0.008,
+                    ),
+                    decoration: BoxDecoration(
+                      color:
+                          Colors.grey.shade200, // background color of the pill
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: FittedBox(
+                      child: Text(
+                        item,
+                        style: TextStyle(
+                          fontFamily: "Jakarta-Medium",
+                          fontSize: fontSize(0.038),
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: h * 0.02),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
@@ -251,19 +289,40 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
                   ],
                 ),
               ),
-              SizedBox(height: h * 0.03),
+              SizedBox(height: h * 0.02),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Contact (₹5/min)',
+                  style: TextStyle(
+                    fontFamily: "Jakarta-Bold",
+                    fontSize: fontSize(0.045),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: h * 0.025),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   _actionCircle(Icons.videocam, "Video",
-                      width: w * 0.27, height: h * 0.05, onTap: () {}),
+                      width: w * 0.27,
+                      height: h * 0.055,
+                      onTap: () {},
+                      price: "₹ 20/min"),
                   _actionCircle(Icons.call, "Audio",
-                      width: w * 0.27, height: h * 0.05, onTap: () {}),
+                      width: w * 0.27,
+                      height: h * 0.055,
+                      onTap: () {},
+                      price: "₹ 10/min"),
                   _actionCircle(Icons.chat, "Text",
-                      width: w * 0.27, height: h * 0.05, onTap: () {}),
+                      width: w * 0.27,
+                      height: h * 0.055,
+                      onTap: () {},
+                      price: "₹ 5/min"),
                 ],
               ),
-              SizedBox(height: h * 0.02),
+              SizedBox(height: h * 0.04),
             ],
           ),
         ),
@@ -271,40 +330,11 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
     );
   }
 
-  Widget _bulletText(String text, double fs) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '• ',
-          style: TextStyle(
-            fontFamily: "Jakarta-Bold",
-            fontSize: fs,
-            height: 1.5,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Expanded(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontFamily: "Jakarta-Medium",
-              fontSize: fs,
-              height: 1.5,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _actionCircle(
-    IconData icon,
-    String label, {
-    required double width,
-    required double height,
-    required VoidCallback onTap,
-  }) {
+  Widget _actionCircle(IconData icon, String label,
+      {required double width,
+      required double height,
+      required VoidCallback onTap,
+      required String price}) {
     return Material(
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(8),
@@ -316,7 +346,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
           height: height,
           margin: EdgeInsets.symmetric(horizontal: width * 0.05),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(10),
             gradient: LinearGradient(
               colors: [Colors.deepPurpleAccent, Colors.purpleAccent],
               begin: Alignment.topLeft,

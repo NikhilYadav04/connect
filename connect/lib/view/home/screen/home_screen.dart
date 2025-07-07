@@ -93,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               bottom: bottomInset,
                             ),
                             child: SearchTextField(
+                              label: "Search experts, skills...",
                               controller: _textEditingController,
                               verticalPadding: sh * 0.018,
                               horizontalPadding: sw * 0.035,
@@ -145,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: developers.length,
+                      itemCount: 6,
                       itemBuilder: (context, index) {
                         final dev = developers[index];
                         return GestureDetector(
@@ -160,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             rate: dev.rate,
                             rating: dev.rating,
                             reviewCount: dev.reviewCount,
+                            expertise: dev.expertise,
                             profileImageUrl: dev.profileImageUrl,
                             languages: dev.languages,
                             experience: dev.experience,
