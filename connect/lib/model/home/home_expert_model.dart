@@ -52,7 +52,7 @@ final List<Developer> developers = [
   Developer(
     name: "David Kim",
     subtitle: "Backend Engineer at Amazon",
-    rate: 5.0,
+    rate: 78.0,
     rating: 4.9,
     reviewCount: 120,
     profileImageUrl: "https://randomuser.me/api/portraits/men/32.jpg",

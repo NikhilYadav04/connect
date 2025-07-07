@@ -4,6 +4,7 @@ import 'package:connect/core/constants/colors.dart';
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ExpertDetailPage extends StatefulWidget {
   final ExpertDetailModel expert;
@@ -305,24 +306,24 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _actionCircle(Icons.videocam, "Video",
+                  _actionCircle(FontAwesomeIcons.video, "Video",
                       width: w * 0.27,
                       height: h * 0.055,
                       onTap: () {},
                       price: "₹ 20/min"),
-                  _actionCircle(Icons.call, "Audio",
+                  _actionCircle(FontAwesomeIcons.phone, "Audio",
                       width: w * 0.27,
                       height: h * 0.055,
                       onTap: () {},
                       price: "₹ 10/min"),
-                  _actionCircle(Icons.chat, "Text",
+                  _actionCircle(FontAwesomeIcons.solidComment, "Text",
                       width: w * 0.27,
                       height: h * 0.055,
                       onTap: () {},
                       price: "₹ 5/min"),
                 ],
               ),
-              SizedBox(height: h * 0.04),
+              SizedBox(height: h * 0.035),
             ],
           ),
         ),
@@ -363,8 +364,8 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: Colors.white, size: height * 0.5),
-              SizedBox(width: width * 0.07),
+              Icon(icon, color: Colors.white, size: height * 0.38),
+              SizedBox(width: width * 0.08),
               Text(
                 label,
                 textAlign: TextAlign.center,

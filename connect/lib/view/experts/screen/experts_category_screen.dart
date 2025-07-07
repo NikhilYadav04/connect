@@ -1,3 +1,4 @@
+import 'package:connect/core/constants/colors.dart';
 import 'package:connect/model/experts/category_card.dart';
 import 'package:connect/view/experts/widgets/category_card.dart';
 import 'package:connect/view/experts/widgets/expert_search_field.dart';
@@ -51,12 +52,12 @@ class _ExpertsCategoryScreenState extends State<ExpertsCategoryScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.colorLightGrayBG,
         body: NestedScrollView(
           headerSliverBuilder: (context, _) => [
             SliverAppBar(
               automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.colorLightGrayBG,
               toolbarHeight: sh * 0.095,
               floating: true,
               snap: true,
