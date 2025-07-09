@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:connect/core/constants/colors.dart';
+import 'package:connect/view/experts/widgets/expert_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:connect/core/constants/fontfamily.dart';
 import 'package:connect/core/router/appRouter.dart';
@@ -172,23 +173,29 @@ class _ExpertDisplayCategoryScreenState
           headerSliverBuilder: (ctx, inner) => [
             SliverAppBar(
               automaticallyImplyLeading: false,
-              toolbarHeight: sh * 0.074,
+              toolbarHeight: sh * 0.08,
               backgroundColor: AppColors.colorPurple,
               flexibleSpace: SafeArea(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: sh * 0.02),
-                  child: Row(
+                  padding: EdgeInsets.only(left: sw * 0.04,right: sw*0.02),
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: sh * 0.03,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: sh * 0.03,
+                          ),
                         ),
                       ),
-                      Expanded(
-                        child: Center(
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: sw*0.1),
                           child: Text(
                             widget.category,
                             style: textStyle2.copyWith(
@@ -199,6 +206,10 @@ class _ExpertDisplayCategoryScreenState
                             ),
                           ),
                         ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: WalletAmountBadge(sh: sh, sw: sw),
                       ),
                     ],
                   ),
