@@ -1,3 +1,6 @@
+import 'package:expert/core/constants/colors.dart';
+import 'package:expert/core/constants/fontFamily.dart';
+import 'package:expert/view/profile/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -25,223 +28,272 @@ class ProfileScreen extends StatelessWidget {
           color: color ?? Colors.black,
         );
 
-    // Reusable card widget: either a solid color or gradient background
+    //* Reusable card widget with gradient, shadow, icon
     Widget infoCard({
-      Color? color,
-      Gradient? gradient,
-      required Widget child,
-      double heightFactor = 0.12,
+      required Gradient gradient,
+      required IconData icon,
+      required String title,
+      required String value,
+      required double sw,
+      required double sh,
     }) {
       return Container(
         width: sw * 0.9,
-        height: sh * heightFactor,
-        margin: EdgeInsets.symmetric(vertical: sh * 0.01),
+        height: sh * 0.115,
+        margin: EdgeInsets.symmetric(vertical: sh * 0.012),
         padding: EdgeInsets.all(sw * 0.04),
         decoration: BoxDecoration(
-          color: color,
           gradient: gradient,
           borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 12,
+              offset: Offset(0, 6),
+            ),
+          ],
         ),
-        child: child,
+        child: Row(
+          children: [
+            //* Texts
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: light(sh * 0.021, Colors.white70)),
+                  Spacer(),
+                  Text(value,
+                      style: textStyle3.copyWith(
+                          fontSize: sh * 0.028,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+            //* Icon
+            Icon(
+              icon,
+              color: Colors.white.withOpacity(0.85),
+              size: sh * 0.035,
+            ),
+          ],
+        ),
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: sh * 0.02),
-          child: Center(
-            child: Column(
-              children: [
-                // — Header with gradient background —
-                infoCard(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF4A6CF7), Color(0xFF8D4CF7)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  heightFactor: 0.2,
-                  child: Row(
-                    children: [
-                      // Avatar + camera icon
-                      Stack(
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: AppColors.colorLightGrayBG,
+          body: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  floating: true,
+                  snap: false,
+                  automaticallyImplyLeading: false,
+                  toolbarHeight: sh * 0.074,
+                  backgroundColor: AppColors.colorPurple,
+                  flexibleSpace: SafeArea(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: sh * 0.02),
+                      child: Row(
                         children: [
-                          CircleAvatar(
-                            radius: sw * 0.12,
-                            backgroundImage: AssetImage('assets/avatar.jpg'),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: CircleAvatar(
-                              radius: sw * 0.04,
-                              backgroundColor: Colors.white,
-                              child: Icon(
-                                Icons.camera_alt,
-                                size: sw * 0.05,
-                                color: Colors.grey[800],
+                          Expanded(
+                            child: Center(
+                              child: Text(
+                                "Profile",
+                                style: textStyle2.copyWith(
+                                  wordSpacing: 2,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: sh * 0.027,
+                                ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(width: sw * 0.04),
-                      // Name, Verified badge, specialty, rating, status, rate
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  'Dr. Sarah Johnson',
-                                  style: bold(sw * 0.055, Colors.white),
-                                ),
-                                SizedBox(width: sw * 0.02),
-                                Container(
+                    ),
+                  ),
+                )
+              ];
+            },
+            body: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: sh * 0.02),
+              child: Center(
+                child: Column(
+                  children: [
+                    //* — Header with gradient background —
+                    profileCard(sw, sh, true),
+
+                    SizedBox(height: sh * 0.015),
+
+                    expertiseTagsCard(sw, sh),
+
+                    // SizedBox(height: sh * 0.00),
+
+                    //* — Stats Cards with Icons —
+                    infoCard(
+                      sw: sw,
+                      sh: sh,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF43A047), Color(0xFF66BB6A)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      icon: Icons.account_balance_wallet_outlined,
+                      title: 'Lifetime Earnings',
+                      value: '₹2,85,000.00',
+                    ),
+                    infoCard(
+                      sw: sw,
+                      sh: sh,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1E88E5), Color(0xFF42A5F5)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      icon: Icons.calendar_month_outlined,
+                      title: 'Monthly Earnings',
+                      value: '₹45,000.00',
+                    ),
+                    infoCard(
+                      sw: sw,
+                      sh: sh,
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF8E24AA), Color(0xFFBA68C8)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      icon: Icons.group,
+                      title: 'Total Sessions',
+                      value: '1,247',
+                    ),
+                    infoCard(
+                      sw: sw,
+                      sh: sh,
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color(0xFFFB8C00),
+                          Color(0xFFFB8C00),
+                          Color(0xFFFFB74D)
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      icon: Icons.access_time,
+                      title: 'Total Minutes',
+                      value: '18,420',
+                    ),
+
+                    SizedBox(
+                      height: sh * 0.01,
+                    ),
+
+                    //* — Pending Payout block —
+                    Container(
+                      width: sw * 0.9,
+                      margin: EdgeInsets.symmetric(vertical: sh * 0.01),
+                      padding: EdgeInsets.all(sw * 0.045),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFF8E1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                            color: const Color(0xFFFFCC80), width: 1.2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pending Payout',
+                            style: textStyle3.copyWith(
+                                fontSize: sw * 0.045,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: sh * 0.015),
+                          Text(
+                            '₹8,500.00',
+                            style: textStyle3.copyWith(
+                                fontSize: sw * 0.07,
+                                color: Colors.deepOrange,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: sh * 0.015),
+                          Text(
+                            'Available for withdrawal',
+                            style: light(sw * 0.038),
+                          ),
+                          SizedBox(height: sh * 0.03),
+                          Row(
+                            children: [
+                              //* Withdraw Button
+                              ElevatedButton.icon(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color(0xFFFFB74D), // light orange
+                                  foregroundColor:
+                                      Colors.white, // icon and text color
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: sw * 0.02,
-                                    vertical: sh * 0.005,
+                                    horizontal: sw * 0.05,
+                                    vertical: sh * 0.014,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green[400],
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Text(
-                                    'Verified',
-                                    style: light(sw * 0.035, Colors.white),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              ],
-                            ),
-                            SizedBox(height: sh * 0.008),
-                            Text(
-                              'Tech & Product  •  ⭐ 4.8 (234)',
-                              style: medium(sw * 0.04, Colors.white70),
-                            ),
-                            SizedBox(height: sh * 0.008),
-                            Row(
-                              children: [
-                                Text(
-                                  'Online Status:',
-                                  style: medium(sw * 0.035, Colors.white70),
+                                icon: Icon(
+                                  Icons.download_rounded,
+                                  size: sh * 0.026,
                                 ),
-                                Switch(value: true, onChanged: (_) {}),
-                                Spacer(),
-                                Text(
-                                  '₹150.00/hour',
-                                  style: medium(sw * 0.04, Colors.white),
+                                label: Text('Withdraw',
+                                    style: textStyle2.copyWith(
+                                        fontSize: sw * 0.04,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              ),
+                              SizedBox(width: sw * 0.03),
+                              //* View Details Button
+                              OutlinedButton.icon(
+                                onPressed: () {},
+                                style: OutlinedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor:
+                                      Colors.black, // icon and text color
+                                  side: BorderSide(color: Colors.grey.shade400),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: sw * 0.04,
+                                    vertical: sh * 0.014,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                icon: Icon(Icons.analytics_outlined,
+                                    size: sh * 0.027),
+                                label: Text('View Details',
+                                    style: textStyle2.copyWith(
+                                        fontSize: sw * 0.04,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade800)),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    )
+                  ],
                 ),
-
-                // — Stats cards: each with a solid color —
-                infoCard(
-                  color: Colors.green[400]!,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Lifetime Earnings', style: light(sw * 0.04, Colors.white70)),
-                      Spacer(),
-                      Text('₹2,85,000.00', style: bold(sw * 0.065, Colors.white)),
-                    ],
-                  ),
-                ),
-                infoCard(
-                  color: Colors.blue[400]!,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Monthly Earnings', style: light(sw * 0.04, Colors.white70)),
-                      Spacer(),
-                      Text('₹45,000.00', style: bold(sw * 0.065, Colors.white)),
-                    ],
-                  ),
-                ),
-                infoCard(
-                  color: Colors.purple[400]!,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Total Sessions', style: light(sw * 0.04, Colors.white70)),
-                      Spacer(),
-                      Text('1,247', style: bold(sw * 0.065, Colors.white)),
-                    ],
-                  ),
-                ),
-                infoCard(
-                  color: Colors.orange[400]!,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Total Minutes', style: light(sw * 0.04, Colors.white70)),
-                      Spacer(),
-                      Text('18,420', style: bold(sw * 0.065, Colors.white)),
-                    ],
-                  ),
-                ),
-
-                // — Pending Payout block —
-                infoCard(
-                  color: Colors.yellow[100]!,
-                  child: Row(
-                    children: [
-                      // Text column
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Pending Payout', style: medium(sw * 0.045)),
-                            SizedBox(height: sh * 0.005),
-                            Text('₹8,500.00', style: bold(sw * 0.07)),
-                            SizedBox(height: sh * 0.005),
-                            Text('Available for withdrawal', style: light(sw * 0.035)),
-                          ],
-                        ),
-                      ),
-                      // Withdraw button
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber[700],
-                          padding: EdgeInsets.symmetric(
-                            horizontal: sw * 0.05,
-                            vertical: sh * 0.015,
-                          ),
-                        ),
-                        icon: const Icon(Icons.download_rounded),
-                        label: Text('Withdraw', style: medium(sw * 0.04)),
-                        onPressed: () {},
-                      ),
-                      SizedBox(width: sw * 0.02),
-                      // View Details button
-                      OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.grey[600]!),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: sw * 0.04,
-                            vertical: sh * 0.015,
-                          ),
-                        ),
-                        child: Text('View Details', style: medium(sw * 0.04)),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:expert/core/constants/colors.dart';
+import 'package:expert/core/constants/fontFamily.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsScreen extends StatelessWidget {
@@ -11,28 +13,76 @@ class AnalyticsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Analytics',
-            style: TextStyle(
-              fontFamily: 'Jakarta-Medium',
-              fontSize: 20,
-              color: Colors.black,
+          automaticallyImplyLeading: false,
+          toolbarHeight: sh * 0.074,
+          backgroundColor: AppColors.colorPurple,
+          flexibleSpace: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: sh * 0.02),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "Analytics",
+                        style: textStyle2.copyWith(
+                          wordSpacing: 2,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: sh * 0.027,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          iconTheme: const IconThemeData(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.colorLightGrayBG,
         body: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: sw * 0.05,
+            horizontal: sw * 0.04,
             vertical: sh * 0.02,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              //* Title and subtitle
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: sw * 0.01, vertical: sh * 0.00),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Expert Dashboard",
+                      style: TextStyle(
+                        wordSpacing: 1,
+                        letterSpacing: 0.8,
+                        fontFamily: 'Jakarta-Medium',
+                        fontSize: sh * 0.035,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    SizedBox(height: sh * 0.015),
+                    Text(
+                      "Manage your expertise and track your performance.",
+                      style: TextStyle(
+                        fontFamily: 'Jakarta-Light',
+                        fontSize: sh * 0.018,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(
+                height: sh * 0.022,
+              ),
+
               StatsCard(
                 sw: sw,
                 sh: sh,
@@ -99,9 +149,10 @@ class StatsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 12,
+            spreadRadius: 2,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -110,19 +161,7 @@ class StatsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Container(
-                padding: EdgeInsets.all(sw * 0.03),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: iconColor.withOpacity(0.1),
-                ),
-                child: Icon(
-                  icon,
-                  size: sw * 0.07,
-                  color: iconColor,
-                ),
-              ),
-              SizedBox(width: sw * 0.04),
+              //* Left side: title and value
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,13 +177,27 @@ class StatsCard extends StatelessWidget {
                     SizedBox(height: sh * 0.005),
                     Text(
                       value,
-                      style: TextStyle(
-                        fontFamily: 'Jakarta-Bold',
-                        fontSize: sw * 0.06,
-                        color: Colors.black,
+                      style: textStyle3.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: sw * 0.07,
+                        color: iconColor,
                       ),
                     ),
                   ],
+                ),
+              ),
+
+              //* Right side: Icon
+              Container(
+                padding: EdgeInsets.all(sw * 0.03),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: iconColor.withOpacity(0.1),
+                ),
+                child: Icon(
+                  icon,
+                  size: sw * 0.07,
+                  color: iconColor,
                 ),
               ),
             ],
@@ -153,7 +206,7 @@ class StatsCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(4),
             child: LinearProgressIndicator(
-              minHeight: sh * 0.008,
+              minHeight: sh * 0.01,
               value: progress,
               backgroundColor: Colors.grey[300],
               valueColor: AlwaysStoppedAnimation(iconColor),
