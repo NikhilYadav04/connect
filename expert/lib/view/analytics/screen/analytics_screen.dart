@@ -1,5 +1,6 @@
 import 'package:expert/core/constants/colors.dart';
 import 'package:expert/core/constants/fontFamily.dart';
+import 'package:expert/view/home/screen/home_drawer_screen.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsScreen extends StatelessWidget {
@@ -12,29 +13,28 @@ class AnalyticsScreen extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
+        drawer: AppDrawer(sh: sh, sw: sw),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           toolbarHeight: sh * 0.074,
           backgroundColor: AppColors.colorPurple,
-          flexibleSpace: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: sh * 0.02),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        "Analytics",
-                        style: textStyle2.copyWith(
-                          wordSpacing: 2,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: sh * 0.027,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+          centerTitle: true,
+          title: Text(
+            "Analytics",
+            style: textStyle2.copyWith(
+              wordSpacing: 2,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: sh * 0.027,
+            ),
+          ),
+          leading: Builder(
+            builder: (context) => GestureDetector(
+              onTap: () => Scaffold.of(context).openDrawer(),
+              child: Icon(
+                Icons.menu,
+                color: Colors.white,
+                size: sh * 0.04,
               ),
             ),
           ),
