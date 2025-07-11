@@ -1,21 +1,28 @@
 import 'package:connect/core/constants/colors.dart';
 import 'package:connect/core/constants/fontfamily.dart';
+import 'package:connect/core/router/appRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-Widget headerTitle(double sh, double sw) {
+Widget headerTitle(double sh, double sw, void Function() openDrawer) {
   return Row(
     children: [
-      ClipOval(
-        child: Container(
-          height: sh * 0.044,
-          width: sh * 0.044, // make sure width = height for perfect circle
-          color: Colors.white,
-          child: Center(
-            child: SvgPicture.asset(
-              "assets/svg/group.svg",
-              width: sh * 0.026,
-              height: sh * 0.026,
+      GestureDetector(
+        onTap: () {
+          openDrawer();
+        },
+        child: ClipOval(
+          child: Container(
+            height: sh * 0.044,
+            width: sh * 0.044, // make sure width = height for perfect circle
+            color: Colors.white,
+            child: Center(
+              child: SvgPicture.asset(
+                "assets/svg/group.svg",
+                width: sh * 0.026,
+                height: sh * 0.026,
+              ),
             ),
           ),
         ),
@@ -51,7 +58,7 @@ Widget headerTitle(double sh, double sw) {
   );
 }
 
-Widget walletButton(double sh, double sw) {
+Widget walletButton(double sh, double sw,BuildContext context) {
   return Container(
     height: sh * 0.125,
     padding: EdgeInsets.symmetric(
@@ -99,7 +106,18 @@ Widget walletButton(double sh, double sw) {
 
         //* Recharge Button
         TextButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Future.delayed(Duration(milliseconds: 500));
+
+            Navigator.pushNamed(
+              context,
+              '/wallet-screen',
+              arguments: {
+                'transition': TransitionType.fade,
+                'duration': 300,
+              },
+            );
+          },
           icon: Icon(
             Icons.add,
             color: Colors.white,

@@ -1,8 +1,12 @@
 import 'package:connect/model/experts/expert_detail_card_model.dart';
+import 'package:connect/view/auth/screen/register_screen.dart';
+import 'package:connect/view/auth/screen/sign_in_screen.dart';
 import 'package:connect/view/bottom/bottom_bar_screen.dart';
 import 'package:connect/view/experts/screen/expert_detail.dart';
 import 'package:connect/view/experts/screen/expert_display_category_screen.dart';
 import 'package:connect/view/home/screen/home_screen.dart';
+import 'package:connect/view/landing_page.dart';
+import 'package:connect/view/recharge/screen/wallet_screen.dart';
 import 'package:flutter/material.dart';
 
 enum TransitionType {
@@ -80,6 +84,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
   Widget page;
   switch (settings.name) {
+    case '/landing_screen':
+      page = ClientLandingScreen();
+      break;
+    case '/sign-in-screen':
+      page = SignInScreen();
+      break;
+    case '/sign-up-screen':
+      page = SignUpScreen();
+      break;
     case '/bottom-bar-screen':
       page = BottomBarScreen();
       break;
@@ -120,6 +133,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/expert-display-category-screen':
       final category = args?['category'] ?? "";
       page = ExpertDisplayCategoryScreen(category: category);
+      break;
+    case '/wallet-screen':
+      page = RechargeWalletScreen();
       break;
     default:
       page = HomeScreen();

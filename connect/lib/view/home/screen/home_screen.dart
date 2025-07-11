@@ -2,10 +2,12 @@ import 'package:connect/core/constants/colors.dart';
 import 'package:connect/core/router/appRouter.dart';
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:connect/model/home/home_expert_model.dart';
+import 'package:connect/view/home/screen/home_drawer.dart';
 import 'package:connect/view/home/widgets/home_expert_card.dart';
 import 'package:connect/view/home/widgets/home_screen_widgets.dart';
 import 'package:connect/view/home/widgets/home_search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  bool _isShimmer = false;
+
   @override
   Widget build(BuildContext context) {
     final sh = MediaQuery.of(context).size.height;
@@ -47,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SafeArea(
       child: Scaffold(
+          drawer: AppDrawer(sh: sh, sw: sw),
           backgroundColor: AppColors.colorLightGrayBG,
           resizeToAvoidBottomInset: false,
           body: NestedScrollView(
@@ -75,7 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(height: sh * 0.05),
-                          headerTitle(sh, sw),
+                          headerTitle(
+                            sh,
+                            sw,
+                            () => Scaffold.of(context).openDrawer(),
+                          ),
                           SizedBox(height: sh * 0.035),
 
                           //* Header Title
@@ -129,7 +138,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     // ),
 
                     //* Wallet Balance Card
-                    walletButton(sh, sw),
+                    Skeletonizer(
+                        enabled: _isShimmer,
+                        effect: ShimmerEffect(
+                            duration: Duration(milliseconds: 2000),
+                            baseColor: Color(0xFF4ADE80),
+                            highlightColor: Color(0xFF3B82F6)),
+                        child: walletButton(sh, sw, context)),
 
                     SizedBox(
                       height: sh * 0.032,
@@ -153,18 +168,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () async {
                             _handleNav(dev);
                           },
-                          child: DeveloperCard(
-                            sh: sh,
-                            sw: sw,
-                            name: dev.name,
-                            subtitle: dev.subtitle,
-                            rate: dev.rate,
-                            rating: dev.rating,
-                            reviewCount: dev.reviewCount,
-                            expertise: dev.expertise,
-                            profileImageUrl: dev.profileImageUrl,
-                            languages: dev.languages,
-                            experience: dev.experience,
+                          child: Skeletonizer(
+                            effect: ShimmerEffect(
+                                duration: Duration(milliseconds: 1500),
+                                highlightColor: Colors.white.withOpacity(0.1)),
+                            enabled: _isShimmer,
+                            child: DeveloperCard(
+                              sh: sh,
+                              sw: sw,
+                              name: dev.name,
+                              subtitle: dev.subtitle,
+                              rate: dev.rate,
+                              rating: dev.rating,
+                              reviewCount: dev.reviewCount,
+                              expertise: dev.expertise,
+                              profileImageUrl: dev.profileImageUrl,
+                              languages: dev.languages,
+                              experience: dev.experience,
+                            ),
                           ),
                         );
                       },

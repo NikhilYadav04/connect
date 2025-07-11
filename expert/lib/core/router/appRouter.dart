@@ -1,5 +1,7 @@
 import 'package:expert/view/bottom/bottom_bar_screen.dart';
 import 'package:expert/view/home/screen/home_screen.dart';
+import 'package:expert/view/join/screens/expert_join_screen.dart';
+import 'package:expert/view/landing_screen.dart';
 import 'package:flutter/material.dart';
 
 enum TransitionType {
@@ -77,8 +79,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
   Widget page;
   switch (settings.name) {
+    case '/landing-screen':
+      page = ExpertLandingScreen();
+      break;
     case '/bottom-bar-screen':
       page = BottomBarScreen();
+      break;
+    case '/expert-join-screen':
+      page = ExpertSignUpScreen();
       break;
     default:
       page = HomeScreen();

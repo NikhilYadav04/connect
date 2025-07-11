@@ -2,6 +2,7 @@ import 'package:expert/core/constants/colors.dart';
 import 'package:expert/core/constants/fontFamily.dart';
 import 'package:expert/model/session/model_sessions.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SessionsScreen extends StatefulWidget {
   const SessionsScreen({super.key});
@@ -123,72 +124,77 @@ class _SessionsScreenState extends State<SessionsScreen> {
                           ),
                         ],
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              //* Left: Icon + Name
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(iconFor(s.type), size: sh * 0.03),
-                                  SizedBox(width: sw * 0.03),
-                                  Text(
-                                    s.participant,
-                                    style: bold(
-                                      sh * 0.02,
+                      child: Skeletonizer(
+                        enabled: false,
+                        effect: ShimmerEffect(
+                            duration: Duration(milliseconds: 1500)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //* Left: Icon + Name
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(iconFor(s.type), size: sh * 0.03),
+                                    SizedBox(width: sw * 0.03),
+                                    Text(
+                                      s.participant,
+                                      style: bold(
+                                        sh * 0.02,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Spacer(),
-                              //* Right: Type + Duration
-                              Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: sw * 0.025,
-                                      vertical: sh * 0.005,
+                                  ],
+                                ),
+                                Spacer(),
+                                //* Right: Type + Duration
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: sw * 0.025,
+                                        vertical: sh * 0.005,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        labelFor(s.type),
+                                        style: medium(sh * 0.017),
+                                      ),
                                     ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      labelFor(s.type),
+                                    SizedBox(width: sw * 0.025),
+                                    Text(
+                                      '${s.durationMinutes} min',
                                       style: medium(sh * 0.017),
                                     ),
-                                  ),
-                                  SizedBox(width: sw * 0.025),
-                                  Text(
-                                    '${s.durationMinutes} min',
-                                    style: medium(sh * 0.017),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: sh * 0.015),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '${s.date.year}-${s.date.month.toString().padLeft(2, '0')}-${s.date.day.toString().padLeft(2, '0')}',
-                                style: light(sh * 0.017, Colors.grey[700]),
-                              ),
-                              Text(
-                                '₹${s.amount.toStringAsFixed(2)}',
-                                style: textStyle1.copyWith(
-                                    fontSize: sh * 0.023,
-                                    color: Colors.green[700],
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: sh * 0.015),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${s.date.year}-${s.date.month.toString().padLeft(2, '0')}-${s.date.day.toString().padLeft(2, '0')}',
+                                  style: light(sh * 0.017, Colors.grey[700]),
+                                ),
+                                Text(
+                                  '₹${s.amount.toStringAsFixed(2)}',
+                                  style: textStyle1.copyWith(
+                                      fontSize: sh * 0.023,
+                                      color: Colors.green[700],
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

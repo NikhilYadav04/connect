@@ -1,4 +1,4 @@
-import 'package:expert/core/router/appRouter.dart';
+import 'package:connect/core/router/appRouter.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -29,6 +29,7 @@ class AppDrawer extends StatelessWidget {
     }
 
     return Drawer(
+      backgroundColor: Colors.white,
       child: SafeArea(
         child: Column(
           children: [
@@ -119,7 +120,8 @@ class AppDrawer extends StatelessWidget {
                     title: 'Logout',
                     color: Colors.red,
                     onTap: () {
-                     
+                      Navigator.pop(context);
+                      // TODO: logout logic
                     },
                   ),
                 ],

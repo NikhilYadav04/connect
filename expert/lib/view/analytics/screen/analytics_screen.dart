@@ -2,6 +2,7 @@ import 'package:expert/core/constants/colors.dart';
 import 'package:expert/core/constants/fontFamily.dart';
 import 'package:expert/view/home/screen/home_drawer_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({Key? key}) : super(key: key);
@@ -83,34 +84,46 @@ class AnalyticsScreen extends StatelessWidget {
                 height: sh * 0.022,
               ),
 
-              StatsCard(
-                sw: sw,
-                sh: sh,
-                icon: Icons.repeat,
-                iconColor: Colors.green,
-                title: 'Repeat Clients',
-                value: '89%',
-                progress: 0.89,
+              Skeletonizer(
+                enabled: false,
+                effect: ShimmerEffect(duration: Duration(milliseconds: 1500)),
+                child: StatsCard(
+                  sw: sw,
+                  sh: sh,
+                  icon: Icons.repeat,
+                  iconColor: Colors.green,
+                  title: 'Repeat Clients',
+                  value: '89%',
+                  progress: 0.89,
+                ),
               ),
               SizedBox(height: sh * 0.02),
-              StatsCard(
-                sw: sw,
-                sh: sh,
-                icon: Icons.star,
-                iconColor: Colors.amber,
-                title: 'Avg. Rating',
-                value: '4.8',
-                progress: 4.8 / 5.0,
+              Skeletonizer(
+                enabled: false,
+                effect: ShimmerEffect(duration: Duration(milliseconds: 1500)),
+                child: StatsCard(
+                  sw: sw,
+                  sh: sh,
+                  icon: Icons.star,
+                  iconColor: Colors.amber,
+                  title: 'Avg. Rating',
+                  value: '4.8',
+                  progress: 4.8 / 5.0,
+                ),
               ),
               SizedBox(height: sh * 0.02),
-              StatsCard(
-                sw: sw,
-                sh: sh,
-                icon: Icons.access_time,
-                iconColor: Colors.blue,
-                title: 'Response Time',
-                value: '2.5m',
-                progress: 0.75,
+              Skeletonizer(
+                enabled: false,
+                effect: ShimmerEffect(duration: Duration(milliseconds: 1500)),
+                child: StatsCard(
+                  sw: sw,
+                  sh: sh,
+                  icon: Icons.access_time,
+                  iconColor: Colors.blue,
+                  title: 'Response Time',
+                  value: '2.5m',
+                  progress: 0.75,
+                ),
               ),
             ],
           ),

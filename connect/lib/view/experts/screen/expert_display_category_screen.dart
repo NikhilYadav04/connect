@@ -10,6 +10,7 @@ import 'package:connect/model/home/home_expert_model.dart';
 import 'package:connect/view/experts/widgets/expert_List_search_field.dart';
 import 'package:connect/view/experts/widgets/filter_card.dart';
 import 'package:connect/view/home/widgets/home_expert_card.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ExpertDisplayCategoryScreen extends StatefulWidget {
   final String category;
@@ -196,13 +197,15 @@ class _ExpertDisplayCategoryScreenState
                         alignment: Alignment.center,
                         child: Padding(
                           padding: EdgeInsets.only(right: sw*0.1),
-                          child: Text(
-                            widget.category,
-                            style: textStyle2.copyWith(
-                              wordSpacing: 2,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: sh * 0.027,
+                          child: FittedBox(
+                            child: Text(
+                              widget.category.split('&')[0],
+                              style: textStyle2.copyWith(
+                                wordSpacing: 2,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: sh * 0.027,
+                              ),
                             ),
                           ),
                         ),
@@ -272,18 +275,25 @@ class _ExpertDisplayCategoryScreenState
                             final dev = _filteredDevelopers[i];
                             return GestureDetector(
                               onTap: () => _handleNav(dev),
-                              child: DeveloperCard(
-                                sh: sh,
-                                sw: sw,
-                                name: dev.name,
-                                subtitle: dev.subtitle,
-                                rate: dev.rate,
-                                rating: dev.rating,
-                                reviewCount: dev.reviewCount,
-                                expertise: dev.expertise,
-                                profileImageUrl: dev.profileImageUrl,
-                                languages: dev.languages,
-                                experience: dev.experience,
+                              child: Skeletonizer(
+                                effect: ShimmerEffect(
+                                  duration: Duration(milliseconds: 1500)
+                                  ,highlightColor: Colors.white.withOpacity(0.1)
+                                ),
+                                enabled: false,
+                                child: DeveloperCard(
+                                  sh: sh,
+                                  sw: sw,
+                                  name: dev.name,
+                                  subtitle: dev.subtitle,
+                                  rate: dev.rate,
+                                  rating: dev.rating,
+                                  reviewCount: dev.reviewCount,
+                                  expertise: dev.expertise,
+                                  profileImageUrl: dev.profileImageUrl,
+                                  languages: dev.languages,
+                                  experience: dev.experience,
+                                ),
                               ),
                             );
                           },

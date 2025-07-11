@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
     child: MaterialApp(
       title: 'PeerConnect',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/bottom-bar-screen',
+      initialRoute: '/landing-screen',
       onGenerateRoute: generateRoute,
     ),
     );
