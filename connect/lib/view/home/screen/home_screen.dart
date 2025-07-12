@@ -1,5 +1,6 @@
+import 'package:connect/controller/user/user_controller.dart';
 import 'package:connect/core/constants/colors.dart';
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:connect/model/home/home_expert_model.dart';
 import 'package:connect/view/home/screen/home_drawer.dart';
@@ -7,6 +8,7 @@ import 'package:connect/view/home/widgets/home_expert_card.dart';
 import 'package:connect/view/home/widgets/home_screen_widgets.dart';
 import 'package:connect/view/home/widgets/home_search_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,10 +43,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  bool _isShimmer = false;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      if (!userProvider.isInitialized) {
+        userProvider.initializeUser();
+      }
+
+      if (!userProvider.expertsInitialized) {
+        userProvider..initializeExperts();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<UserProvider>(context, listen: false);
     final sh = MediaQuery.of(context).size.height;
     final sw = MediaQuery.of(context).size.width;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
@@ -83,7 +99,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           headerTitle(
                             sh,
                             sw,
-                            () => Scaffold.of(context).openDrawer(),
+                            provider.isUserLoading
+                                ? () {}
+                                : () => Scaffold.of(context).openDrawer(),
                           ),
                           SizedBox(height: sh * 0.035),
 
@@ -139,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     //* Wallet Balance Card
                     Skeletonizer(
-                        enabled: _isShimmer,
+                        enabled: provider.isUserLoading,
                         effect: ShimmerEffect(
                             duration: Duration(milliseconds: 2000),
                             baseColor: Color(0xFF4ADE80),
@@ -172,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             effect: ShimmerEffect(
                                 duration: Duration(milliseconds: 1500),
                                 highlightColor: Colors.white.withOpacity(0.1)),
-                            enabled: _isShimmer,
+                            enabled: provider.isExpertsLoading,
                             child: DeveloperCard(
                               sh: sh,
                               sw: sw,

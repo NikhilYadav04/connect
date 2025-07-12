@@ -1,5 +1,5 @@
 import 'package:connect/controller/dummy.dart';
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class _MyAppState extends State<MyApp> {
     child: MaterialApp(
       title: 'PeerConnect',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/landing_screen',
+      initialRoute: '/',
       onGenerateRoute: generateRoute,
     ),
     );

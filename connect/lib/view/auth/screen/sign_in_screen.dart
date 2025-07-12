@@ -1,4 +1,7 @@
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
+import 'package:connect/core/utils/snackBar.dart';
+import 'package:connect/http/models/api_reponse.dart';
+import 'package:connect/http/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -8,10 +11,91 @@ class SignInScreen extends StatefulWidget {
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
+  final _auth = AuthService();
+
+  late AnimationController _animationController;
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
+  }
+
+  void _handleSignIn() async {
+    if (_usernameController.text.trim().isEmpty) {
+      showSnackBar('Please enter your email address', context, isError: true);
+      return;
+    }
+
+    if (!_isValidEmail(_usernameController.text.trim())) {
+      showSnackBar('Please enter a valid email address', context,
+          isError: true);
+      return;
+    }
+
+    if (_passwordController.text.trim().isEmpty) {
+      showSnackBar('Please enter your password', context, isError: true);
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      ApiResponse<Map<String, dynamic>> response = await _auth.login(
+        email: _usernameController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (response.statusCode == 200) {
+        showSnackBar('Login successful! Welcome back.', context,
+            isError: false);
+        Navigator.pushReplacementNamed(
+          context,
+          '/bottom-bar-screen',
+          arguments: {
+            'transition': TransitionType.fade,
+            'duration': 300,
+          },
+        );
+      } else {
+        showSnackBar(response.message, context, isError: true);
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(e.toString(), context, isError: true);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +103,49 @@ class _SignInScreenState extends State<SignInScreen> {
     double sw = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: GestureDetector(
+          onTap: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          },
+          child: Row(
+            children: [
+              SizedBox(
+                width: 2,
+              ),
+              Container(
+                padding: EdgeInsets.all(sw * 0.03),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.grey[300]!,
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 0,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.grey[800],
+                    size: sh * 0.025,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -27,7 +154,7 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: sh * 0.04),
+                SizedBox(height: sh * 0.000),
 
                 //* Logo and App Title
                 Column(
@@ -176,14 +303,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: ElevatedButton(
                           onPressed: () {
                             //* Handle sign in
-                            Navigator.pushNamed(
-                              context,
-                              '/bottom-bar-screen',
-                              arguments: {
-                                'transition': TransitionType.fade,
-                                'duration': 300,
-                              },
-                            );
+                            _handleSignIn();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF6C63FF),
@@ -193,15 +313,17 @@ class _SignInScreenState extends State<SignInScreen> {
                               borderRadius: BorderRadius.circular(sw * 0.02),
                             ),
                           ),
-                          child: Text(
-                            "Sign In",
-                            style: TextStyle(
-                              fontSize: sh * 0.018,
-                              fontFamily: "Jakarta-Medium",
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
+                          child: _isLoading
+                              ? _buildShimmerButton(sw, sh)
+                              : Text(
+                                  "Sign In",
+                                  style: TextStyle(
+                                    fontSize: sh * 0.018,
+                                    fontFamily: "Jakarta-Medium",
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                         ),
                       ),
                       SizedBox(height: sh * 0.025),
@@ -244,6 +366,14 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             // Handle Google sign in
+                            Navigator.pushNamed(
+                              context,
+                              '/bottom-bar-screen',
+                              arguments: {
+                                'transition': TransitionType.fade,
+                                'duration': 300,
+                              },
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -298,8 +428,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        //* Navigate to sign up
-                        Navigator.pushNamed(
+                        Navigator.pushReplacementNamed(
                           context,
                           '/sign-up-screen',
                           arguments: {
@@ -331,6 +460,64 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildShimmerButton(double sw, double sh) {
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return Container(
+          width: double.infinity,
+          height: sh * 0.06,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(sw * 0.02),
+            gradient: LinearGradient(
+              begin: Alignment(-1.5, -1.5),
+              end: Alignment(1.5, 1.5),
+              colors: [
+                const Color(0xFF6C63FF),
+                const Color(0xFF6C63FF),
+                Colors.white.withOpacity(0.7),
+                const Color(0xFF6C63FF),
+                const Color(0xFF6C63FF),
+              ],
+              stops: [
+                0.0,
+                (_animationController.value - 0.1).clamp(0.0, 1.0),
+                _animationController.value.clamp(0.0, 1.0),
+                (_animationController.value + 0.1).clamp(0.0, 1.0),
+                1.0,
+              ],
+            ),
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: sw * 0.05,
+                  height: sw * 0.05,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                ),
+                SizedBox(width: sw * 0.03),
+                Text(
+                  "Signing In...",
+                  style: TextStyle(
+                    fontSize: sh * 0.018,
+                    fontFamily: "Jakarta-Medium",
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

@@ -1,4 +1,4 @@
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:flutter/material.dart';
 
 class WalletAmountBadge extends StatelessWidget {

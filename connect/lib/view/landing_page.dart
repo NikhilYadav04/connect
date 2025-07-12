@@ -1,4 +1,4 @@
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:flutter/material.dart';
 
 class ClientLandingScreen extends StatelessWidget {
@@ -50,7 +50,7 @@ class ClientLandingScreen extends StatelessWidget {
                     ),
                     SizedBox(height: sh * 0.025),
                     Text(
-                      "ProConnect",
+                      "PeerConnect",
                       style: TextStyle(
                         fontSize: sh * 0.038,
                         fontFamily: "Jakarta-Bold",

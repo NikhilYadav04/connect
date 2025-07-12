@@ -7,6 +7,7 @@ import 'package:connect/view/experts/screen/expert_display_category_screen.dart'
 import 'package:connect/view/home/screen/home_screen.dart';
 import 'package:connect/view/landing_page.dart';
 import 'package:connect/view/recharge/screen/wallet_screen.dart';
+import 'package:connect/view/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 enum TransitionType {
@@ -84,6 +85,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
 
   Widget page;
   switch (settings.name) {
+    case '/':
+      page = SplashScreen();
+      break;
     case '/landing_screen':
       page = ClientLandingScreen();
       break;

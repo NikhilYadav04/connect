@@ -1,4 +1,4 @@
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/view/home/widgets/logout_card.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -104,14 +104,7 @@ class AppDrawer extends StatelessWidget {
                     title: 'Wallet History',
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(
-                        context,
-                        '/wallet-screen',
-                        arguments: {
-                          'transition': TransitionType.fade,
-                          'duration': 300,
-                        },
-                      );
+                      showLogoutDialog(context, sh: sh, sw: sw);
                     },
                   ),
                   Divider(),
@@ -121,6 +114,7 @@ class AppDrawer extends StatelessWidget {
                     color: Colors.red,
                     onTap: () {
                       Navigator.pop(context);
+                      showLogoutDialog(context, sh: sh, sw: sw);
                       // TODO: logout logic
                     },
                   ),
@@ -132,4 +126,15 @@ class AppDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool?> showLogoutDialog(BuildContext context,
+    {required double sh, required double sw}) {
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return LogoutConfirmationDialog(sh: sh, sw: sw);
+    },
+  );
 }

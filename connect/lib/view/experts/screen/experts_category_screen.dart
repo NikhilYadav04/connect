@@ -64,7 +64,7 @@ class _ExpertsCategoryScreenState extends State<ExpertsCategoryScreen> {
               flexibleSpace: FlexibleSpaceBar(
                 background: Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: sw * 0.03,
+                    horizontal: sw * 0.04,
                     vertical: sh * 0.013,
                   ),
                   child: CategorySearchTextField(
@@ -79,7 +79,7 @@ class _ExpertsCategoryScreenState extends State<ExpertsCategoryScreen> {
             )
           ],
           body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: sw * 0.025),
+            padding: EdgeInsets.symmetric(horizontal: sw * 0.04),
             child: GridView.builder(
               padding: EdgeInsets.symmetric(
                 horizontal: sw * 0.01,

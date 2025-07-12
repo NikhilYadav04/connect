@@ -1,6 +1,6 @@
 import 'package:connect/core/constants/colors.dart';
 import 'package:connect/core/constants/fontfamily.dart';
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:skeletonizer/skeletonizer.dart';

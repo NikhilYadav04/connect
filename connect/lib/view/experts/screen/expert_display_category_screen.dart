@@ -4,7 +4,7 @@ import 'package:connect/core/constants/colors.dart';
 import 'package:connect/view/experts/widgets/expert_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:connect/core/constants/fontfamily.dart';
-import 'package:connect/core/router/appRouter.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:connect/model/experts/expert_detail_card_model.dart';
 import 'package:connect/model/home/home_expert_model.dart';
 import 'package:connect/view/experts/widgets/expert_List_search_field.dart';

@@ -42,7 +42,7 @@ class _RechargeWalletScreenState extends State<RechargeWalletScreen> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: sw * 0.05),
+          padding: EdgeInsets.symmetric(horizontal: sw * 0.04),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

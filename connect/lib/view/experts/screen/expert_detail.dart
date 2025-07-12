@@ -50,7 +50,7 @@ class _ExpertDetailPageState extends State<ExpertDetailPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.only(left: w * 0.05, right: w * 0.05),
+          padding: EdgeInsets.only(left: w * 0.04, right: w * 0.04),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
