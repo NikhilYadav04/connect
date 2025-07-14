@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:connect/controller/user/experts_controller.dart';
 import 'package:connect/core/constants/colors.dart';
+import 'package:connect/core/utils/utils.dart';
 import 'package:connect/view/experts/widgets/expert_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:connect/core/constants/fontfamily.dart';
@@ -10,10 +12,12 @@ import 'package:connect/model/home/home_expert_model.dart';
 import 'package:connect/view/experts/widgets/expert_List_search_field.dart';
 import 'package:connect/view/experts/widgets/filter_card.dart';
 import 'package:connect/view/home/widgets/home_expert_card.dart';
+import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ExpertDisplayCategoryScreen extends StatefulWidget {
   final String category;
+
   const ExpertDisplayCategoryScreen({
     Key? key,
     required this.category,
@@ -29,6 +33,7 @@ class _ExpertDisplayCategoryScreenState
   final TextEditingController _controller = TextEditingController();
   List<Developer> _filteredDevelopers = [];
   Timer? _debounce;
+  double _amount = 0.0;
 
   //* FILTER STATE
   final List<String> _priceRanges = [
@@ -60,8 +65,23 @@ class _ExpertDisplayCategoryScreenState
   @override
   void initState() {
     super.initState();
-    _filteredDevelopers = List.from(developers);
+    // _filteredDevelopers = List.from(developers);
     _controller.addListener(_onSearchChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //* Get wallet amount first
+      final walletAmount = await AppUtils.getWalletAmount() ?? 0.0;
+
+      final userProvider = Provider.of<ExpertsProvider>(context, listen: false);
+      await userProvider.loadExpertsByCategory(widget.category, context);
+
+      final experts = userProvider.getExpertsByTitle(widget.category) ?? [];
+
+      //* Update UI with both wallet amount and experts
+      setState(() {
+        _amount = walletAmount;
+        _filteredDevelopers = List.from(experts);
+      });
+    });
   }
 
   void _onSearchChanged() {
@@ -166,6 +186,7 @@ class _ExpertDisplayCategoryScreenState
   Widget build(BuildContext context) {
     final sh = MediaQuery.of(context).size.height;
     final sw = MediaQuery.of(context).size.width;
+    final expertProvider = Provider.of<ExpertsProvider>(context, listen: false);
 
     return SafeArea(
       child: Scaffold(
@@ -178,7 +199,7 @@ class _ExpertDisplayCategoryScreenState
               backgroundColor: AppColors.colorPurple,
               flexibleSpace: SafeArea(
                 child: Padding(
-                  padding: EdgeInsets.only(left: sw * 0.04,right: sw*0.02),
+                  padding: EdgeInsets.only(left: sw * 0.04, right: sw * 0.02),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -196,7 +217,7 @@ class _ExpertDisplayCategoryScreenState
                       Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: EdgeInsets.only(right: sw*0.1),
+                          padding: EdgeInsets.only(right: sw * 0.1),
                           child: FittedBox(
                             child: Text(
                               widget.category.split('&')[0],
@@ -212,7 +233,11 @@ class _ExpertDisplayCategoryScreenState
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: WalletAmountBadge(sh: sh, sw: sw),
+                        child: WalletAmountBadge(
+                          sh: sh,
+                          sw: sw,
+                          walletAmount: _amount.toString(),
+                        ),
                       ),
                     ],
                   ),
@@ -274,28 +299,28 @@ class _ExpertDisplayCategoryScreenState
                           itemBuilder: (ctx, i) {
                             final dev = _filteredDevelopers[i];
                             return GestureDetector(
-                              onTap: () => _handleNav(dev),
-                              child: Skeletonizer(
-                                effect: ShimmerEffect(
-                                  duration: Duration(milliseconds: 1500)
-                                  ,highlightColor: Colors.white.withOpacity(0.1)
-                                ),
-                                enabled: false,
-                                child: DeveloperCard(
-                                  sh: sh,
-                                  sw: sw,
-                                  name: dev.name,
-                                  subtitle: dev.subtitle,
-                                  rate: dev.rate,
-                                  rating: dev.rating,
-                                  reviewCount: dev.reviewCount,
-                                  expertise: dev.expertise,
-                                  profileImageUrl: dev.profileImageUrl,
-                                  languages: dev.languages,
-                                  experience: dev.experience,
-                                ),
-                              ),
-                            );
+                                onTap: () => _handleNav(dev),
+                                child: Skeletonizer(
+                                  effect: ShimmerEffect(
+                                      duration: Duration(milliseconds: 1500),
+                                      highlightColor:
+                                          Colors.white.withOpacity(0.1)),
+                                  enabled: expertProvider
+                                      .isCategoryLoading(widget.category),
+                                  child: DeveloperCard(
+                                    sh: sh,
+                                    sw: sw,
+                                    name: dev.name,
+                                    subtitle: dev.subtitle,
+                                    rate: dev.rate,
+                                    rating: dev.rating,
+                                    reviewCount: dev.reviewCount,
+                                    expertise: dev.expertise,
+                                    profileImageUrl: dev.profileImageUrl,
+                                    languages: dev.languages,
+                                    experience: dev.experience,
+                                  ),
+                                ));
                           },
                         ),
                 ],

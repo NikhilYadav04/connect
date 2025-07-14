@@ -2,6 +2,7 @@ import 'package:connect/http/models/model_user.dart';
 import 'package:connect/http/models/model_expert.dart';
 import 'package:connect/http/services/user_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserService _userService = UserService();
@@ -100,6 +101,7 @@ class UserProvider extends ChangeNotifier {
 
       if (response.success && response.data != null) {
         userModel = response.data;
+        storeWalletBalance(userModel?.walletBalance ?? 0.0);
         isInitialized = true;
         _setUserErrorMessage = null;
       } else {
@@ -154,6 +156,7 @@ class UserProvider extends ChangeNotifier {
 
       if (response.success && response.data != null) {
         userModel = response.data;
+        storeWalletBalance(userModel?.walletBalance ?? 0.0);
         _setUserErrorMessage = null;
       } else {
         _setUserErrorMessage = response.message;
@@ -183,5 +186,11 @@ class UserProvider extends ChangeNotifier {
     } finally {
       _setExpertsLoading = false;
     }
+  }
+
+  //* Store user amount in SharedPreferences
+  Future<void> storeWalletBalance(double amount) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('wallet_balance', amount);
   }
 }

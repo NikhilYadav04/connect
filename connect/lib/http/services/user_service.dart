@@ -36,4 +36,22 @@ class UserService extends ApiService {
 
     return response;
   }
+
+  //* Get Experts By Category
+  Future<ApiResponse<List<ExpertModel>>> getAllExpertsByCategory(
+      String categoryId) async {
+    final response = await get<List<ExpertModel>>(
+      ApiEndpoints.getExpertsByCategory(categoryId),
+      fromJson: (data) {
+        if (data is List) {
+          return data
+              .map((item) => ExpertModel.fromJson(item as Map<String, dynamic>))
+              .toList();
+        }
+        throw Exception('Invalid experts data format');
+      },
+    );
+
+    return response;
+  }
 }

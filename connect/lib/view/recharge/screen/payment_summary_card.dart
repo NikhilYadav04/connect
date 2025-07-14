@@ -1,4 +1,7 @@
+import 'package:connect/controller/payment/payment_controller.dart';
+import 'package:connect/core/utils/snackBar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PaymentSummaryCard extends StatelessWidget {
   final double amount;
@@ -14,6 +17,7 @@ class PaymentSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final walletProvider = Provider.of<PaymentProvider>(context,listen: false);
     return Column(
       children: [
         //* Payment Summary Container with grey border
@@ -40,18 +44,18 @@ class PaymentSummaryCard extends StatelessWidget {
               SizedBox(height: sh * 0.015),
 
               //* Recharge Amount
-              _rowItem("Recharge Amount", amount, isBold: false),
+              _rowItem("Recharge Amount", double.parse(walletProvider.amountController.text), isBold: false),
 
               SizedBox(
                 height: sh * 0.012,
               ),
 
-              _rowItem("GST", 18, isBold: false),
+              _rowItem("GST", walletProvider.GST, isBold: false),
 
               Divider(height: sh * 0.03, thickness: 1),
 
               //* Total Amount
-              _rowItem("Total Amount", amount + 18, isBold: true),
+              _rowItem("Total Amount", amount + walletProvider.GST, isBold: true),
             ],
           ),
         ),
@@ -88,6 +92,9 @@ class PaymentSummaryCard extends StatelessWidget {
               child: InkWell(
                 onTap: () {
                   // handle tap
+                  if(double.parse(walletProvider.amountController.text) < 30.0){
+                    showSnackBar("Minimum Recharge AMount is ₹30", context, isError: true);
+                  }
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Container(

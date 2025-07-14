@@ -1,5 +1,8 @@
+import 'package:connect/controller/user/user_controller.dart';
+import 'package:connect/core/utils/router/appRouter.dart';
 import 'package:connect/view/home/widgets/logout_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   final double sh, sw;
@@ -8,6 +11,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     Widget _buildItem({
       required IconData icon,
       required String title,
@@ -47,7 +51,8 @@ class AppDrawer extends StatelessWidget {
                     radius: sh * 0.038,
                     backgroundColor: Colors.grey.shade300,
                     child: Text(
-                      'H', // or load network image
+                      userProvider.userModel?.displayName[0] ??
+                          'D', // or load network image
                       style: TextStyle(
                         fontFamily: 'Jakarta-Medium',
                         fontSize: sh * 0.032,
@@ -59,7 +64,7 @@ class AppDrawer extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hitesh',
+                        userProvider.userModel?.displayName ?? "Dummy",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Jakarta-Medium',
@@ -68,7 +73,7 @@ class AppDrawer extends StatelessWidget {
                       ),
                       SizedBox(height: sh * 0.005),
                       Text(
-                        '+91-9355207485',
+                        '+91-${userProvider.userModel?.phone}',
                         style: TextStyle(
                           fontFamily: 'Jakarta-Light',
                           fontSize: sh * 0.018,
@@ -104,7 +109,14 @@ class AppDrawer extends StatelessWidget {
                     title: 'Wallet History',
                     onTap: () {
                       Navigator.pop(context);
-                      showLogoutDialog(context, sh: sh, sw: sw);
+                      Navigator.pushNamed(
+                        context,
+                        '/wallet-screen',
+                        arguments: {
+                          'transition': TransitionType.topToBottom,
+                          'duration': 300,
+                        },
+                      );
                     },
                   ),
                   Divider(),

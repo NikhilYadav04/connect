@@ -1,6 +1,9 @@
+import 'package:connect/controller/payment/payment_controller.dart';
+import 'package:connect/core/utils/utils.dart';
 import 'package:connect/view/recharge/screen/payment_method_card.dart';
 import 'package:connect/view/recharge/screen/payment_summary_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RechargeWalletScreen extends StatefulWidget {
   const RechargeWalletScreen({super.key});
@@ -12,11 +15,23 @@ class RechargeWalletScreen extends StatefulWidget {
 class _RechargeWalletScreenState extends State<RechargeWalletScreen> {
   final List<int> quickAmounts = [100, 250, 500, 1000, 2000, 5000];
   int selectedAmount = 100;
-  TextEditingController customAmountController =
-      TextEditingController(text: '100');
+  double _amount = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final walletAmount = await AppUtils.getWalletAmount() ?? 0.0;
+      setState(() {
+        _amount = walletAmount;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final walletProvider = Provider.of<PaymentProvider>(context, listen: false);
     final sw = MediaQuery.of(context).size.width;
     final sh = MediaQuery.of(context).size.height;
 
@@ -104,7 +119,7 @@ class _RechargeWalletScreenState extends State<RechargeWalletScreen> {
                             ),
                             SizedBox(height: sh * 0.005),
                             Text(
-                              '₹1,250',
+                              '₹${_amount}',
                               style: TextStyle(
                                 fontFamily: 'Jakarta-Medium',
                                 fontSize: sh * 0.03,
@@ -140,7 +155,8 @@ class _RechargeWalletScreenState extends State<RechargeWalletScreen> {
                       onTap: () {
                         setState(() {
                           selectedAmount = amount;
-                          customAmountController.text = amount.toString();
+                          walletProvider.amountController.text =
+                              amount.toString();
                         });
                       },
                       child: Container(
@@ -181,7 +197,7 @@ class _RechargeWalletScreenState extends State<RechargeWalletScreen> {
                 ),
                 SizedBox(height: sh * 0.015),
                 TextField(
-                  controller: customAmountController,
+                  controller: walletProvider.amountController,
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     final intVal = int.tryParse(value);

@@ -1,14 +1,18 @@
-import 'package:connect/core/utils/router/appRouter.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
+import 'package:connect/core/utils/router/appRouter.dart';
 
 class WalletAmountBadge extends StatelessWidget {
   final double sh;
   final double sw;
+  final String walletAmount;
 
   const WalletAmountBadge({
     Key? key,
     required this.sh,
     required this.sw,
+    required this.walletAmount,
   }) : super(key: key);
 
   @override
@@ -44,7 +48,7 @@ class WalletAmountBadge extends StatelessWidget {
             ),
             SizedBox(width: sw * 0.015),
             Text(
-              '₹1,250',
+              '₹${walletAmount}',
               style: TextStyle(
                 fontFamily: "Jakarta-Light",
                 fontSize: sw * 0.039,
