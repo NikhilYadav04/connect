@@ -1,3 +1,4 @@
+import 'package:expert/controllers/controller_expert.dart';
 import 'package:expert/controllers/dummy.dart';
 import 'package:expert/core/router/appRouter.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers:  [
-      ChangeNotifierProvider(create: (_)=>ProviderDummy(),)
+      ChangeNotifierProvider(create: (_)=>ProviderDummy(),),
+      ChangeNotifierProvider(create: (_)=>ExpertProvider(),),
     ],
     child: MaterialApp(
       title: 'PeerConnect',

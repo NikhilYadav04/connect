@@ -180,7 +180,6 @@ class ExpertLandingScreen extends StatelessWidget {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             //* Navigate to expert registration
-                            Navigator.pop(context);
                             // TODO: logout logic
                             Navigator.pushNamed(
                               context,

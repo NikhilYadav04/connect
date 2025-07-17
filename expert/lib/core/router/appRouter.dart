@@ -1,5 +1,6 @@
 import 'package:expert/view/bottom/bottom_bar_screen.dart';
 import 'package:expert/view/home/screen/home_screen.dart';
+import 'package:expert/view/join/screens/expert_apply_approval_page.dart';
 import 'package:expert/view/join/screens/expert_join_screen.dart';
 import 'package:expert/view/landing_screen.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +89,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/expert-join-screen':
       page = ExpertSignUpScreen();
       break;
+    case '/expert-approval-loader':
+      page = ApplicationSubmittedPage();
     default:
       page = HomeScreen();
       break;
