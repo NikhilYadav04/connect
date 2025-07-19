@@ -325,6 +325,10 @@ class ExpertProvider with ChangeNotifier {
 
   ExpertModel? get expertData => _expertData;
 
+  double _payoutAmount = 0.0;
+
+  double get payoutAmount => _payoutAmount;
+
   void setExpertData(ExpertModel? data) {
     _expertData = data;
     notifyListeners();
@@ -359,5 +363,23 @@ class ExpertProvider with ChangeNotifier {
     } catch (e) {
       setError('Failed to refresh expert details: ${e.toString()}');
     }
+  }
+
+  Future<void> getExpertPayout(String userId) async {
+    try {
+      final response = await authService.getExpertPayout(userId: userId);
+      if (response.success && response.data != null) {
+        _payoutAmount = response.data?['pendingAmount'];
+        notifyListeners();
+      }
+    } catch (e) {
+      setError('Failed to fetch payout details: ${e.toString()}');
+    }
+  }
+
+  void clearAll() {
+    _expertData = null;
+    _payoutAmount = 0.0;
+    notifyListeners();
   }
 }

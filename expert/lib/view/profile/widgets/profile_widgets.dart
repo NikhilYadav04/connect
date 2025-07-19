@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expert/controllers/controller_expert.dart';
 import 'package:expert/core/constants/colors.dart';
 import 'package:expert/core/constants/fontFamily.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,8 @@ TextStyle bold(double size, [Color? color]) => TextStyle(
       color: color ?? Colors.black,
     );
 
-Widget profileCard(double sw, double sh, bool isOnline) {
+Widget profileCard(
+    double sw, double sh, bool isOnline, ExpertProvider provider) {
   return Container(
     padding: EdgeInsets.all(sw * 0.04),
     margin: EdgeInsets.symmetric(vertical: sh * 0.00, horizontal: sw * 0.04),
@@ -62,7 +64,7 @@ Widget profileCard(double sw, double sh, bool isOnline) {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(sw * 0.12),
                     child: CachedNetworkImage(
-                      imageUrl:
+                      imageUrl: provider.expertData?.profilePicture ??
                           "https://randomuser.me/api/portraits/men/46.jpg",
                       width: sw * 0.24,
                       height: sw * 0.24,
@@ -108,7 +110,7 @@ Widget profileCard(double sw, double sh, bool isOnline) {
                           children: [
                             Flexible(
                               child: Text(
-                                'Dr. Sarah Johnson',
+                                provider.expertData?.fullName ?? "Name Error",
                                 style: textStyle3.copyWith(
                                   fontSize: sh * 0.024,
                                   color: Colors.white,
@@ -119,11 +121,14 @@ Widget profileCard(double sw, double sh, bool isOnline) {
                               ),
                             ),
                             SizedBox(width: sw * 0.015),
-                            Icon(
-                              Icons.verified,
-                              color: const Color.fromARGB(255, 131, 238, 9),
-                              size: sh * 0.025,
-                            ),
+                            provider.expertData?.isVerified ?? false
+                                ? Icon(
+                                    Icons.verified,
+                                    color:
+                                        const Color.fromARGB(255, 131, 238, 9),
+                                    size: sh * 0.025,
+                                  )
+                                : SizedBox(),
                           ],
                         ),
                       ),
@@ -143,7 +148,7 @@ Widget profileCard(double sw, double sh, bool isOnline) {
                     ),
                     child: FittedBox(
                       child: Text(
-                        'Tech & Product',
+                        provider.expertData?.subcategory ?? "Expert",
                         style: medium(sh * 0.016, Colors.black87),
                       ),
                     ),
@@ -152,7 +157,7 @@ Widget profileCard(double sw, double sh, bool isOnline) {
 
                   //* Rating
                   Text(
-                    '⭐ 4.8  (234 reviews)',
+                    '⭐ ${provider.expertData?.rating ?? 5.0}  (${provider.expertData?.reviewsCount ?? "5"} reviews)',
                     style: medium(sh * 0.018, Colors.white),
                   ),
                   SizedBox(height: sh * 0.008),
@@ -181,7 +186,7 @@ Widget profileCard(double sw, double sh, bool isOnline) {
 
                   //* Rate
                   Text(
-                    'Rate: ₹150.00/hour',
+                    'Rate: ₹${provider.expertData?.ratePerMinute}/minute',
                     style: medium(sh * 0.02, Colors.white),
                   ),
                 ],
@@ -253,27 +258,20 @@ Widget _transparentButton({
   );
 }
 
-Widget expertiseTagsCard(double sw, double sh) {
-  final List<String> tags = [
-    'Software Development',
-    'Product Management',
-    'UI/UX Design',
-    'Startup Consulting',
-  ];
-
+Widget expertiseTagsCard(double sw, double sh, ExpertProvider provider) {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 0, vertical: sh * 0.015),
     padding: EdgeInsets.all(sw * 0.04),
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
-       boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.15),
-              blurRadius: 12,
-              offset: Offset(0, 6),
-            ),
-          ],
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.15),
+          blurRadius: 12,
+          offset: Offset(0, 6),
+        ),
+      ],
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +288,7 @@ Widget expertiseTagsCard(double sw, double sh) {
         Wrap(
           spacing: sw * 0.025,
           runSpacing: sh * 0.012,
-          children: tags.map((tag) {
+          children: provider.expertData!.expertise!.split("").map((tag) {
             return Container(
               padding: EdgeInsets.symmetric(
                 horizontal: sw * 0.03,

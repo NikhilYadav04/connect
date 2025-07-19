@@ -7,13 +7,18 @@ abstract class ApiService {
 
   Future<ApiResponse<T>> handleRequest<T>(
     Future<Response> request,
-    T Function(dynamic)? fromJson,
-  ) async {
+    T Function(dynamic)? fromJson, {
+    bool isDirectJson = false, //* New parameter for direct JSON
+  }) async {
     try {
       final response = await request;
 
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
-        return ApiResponse.fromJson(response.data, fromJson);
+        if (isDirectJson) {
+          return ApiResponse.fromDirectJson(response.data, fromJson);
+        } else {
+          return ApiResponse.fromJson(response.data, fromJson);
+        }
       } else {
         return ApiResponse.error(
           'Request failed with status: ${response.statusCode}',
@@ -55,11 +60,11 @@ abstract class ApiService {
     String endpoint, {
     Map<String, dynamic>? queryParameters,
     T Function(dynamic)? fromJson,
+    bool isDirectJson = false,
   }) async {
     return handleRequest(
-      _dio.get(endpoint, queryParameters: queryParameters),
-      fromJson,
-    );
+        _dio.get(endpoint, queryParameters: queryParameters), fromJson,
+        isDirectJson: isDirectJson);
   }
 
   Future<ApiResponse<T>> post<T>(
@@ -67,11 +72,12 @@ abstract class ApiService {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     T Function(dynamic)? fromJson,
+    bool isDirectJson = false,
   }) async {
     return handleRequest(
-      _dio.post(endpoint, data: data, queryParameters: queryParameters),
-      fromJson,
-    );
+        _dio.post(endpoint, data: data, queryParameters: queryParameters),
+        fromJson,
+        isDirectJson: isDirectJson);
   }
 
   Future<ApiResponse<T>> put<T>(
@@ -79,11 +85,12 @@ abstract class ApiService {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     T Function(dynamic)? fromJson,
+    bool isDirectJson = false,
   }) async {
     return handleRequest(
-      _dio.put(endpoint, data: data, queryParameters: queryParameters),
-      fromJson,
-    );
+        _dio.put(endpoint, data: data, queryParameters: queryParameters),
+        fromJson,
+        isDirectJson: isDirectJson);
   }
 
   Future<ApiResponse<T>> delete<T>(
@@ -91,10 +98,11 @@ abstract class ApiService {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     T Function(dynamic)? fromJson,
+    bool isDirectJson = false,
   }) async {
     return handleRequest(
-      _dio.delete(endpoint, data: data, queryParameters: queryParameters),
-      fromJson,
-    );
+        _dio.delete(endpoint, data: data, queryParameters: queryParameters),
+        fromJson,
+        isDirectJson: isDirectJson);
   }
 }

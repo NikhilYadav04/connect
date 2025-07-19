@@ -9,4 +9,5 @@ class ApiEndpoints {
   //* Expert EndPoints
   static String getExpertStats(String id) => '/expert/getExpert/${id}';
   static String updateExpertProfile(String id) => '/expert/updateExpert/${id}';
+  static String getPayout(String expertId) => '/payouts/${expertId}';
 }

@@ -136,10 +136,19 @@ class AuthService extends ApiService {
   Future<ApiResponse<ExpertModel>> getUserStatsById({
     required String userId,
   }) async {
-    final response = await get<ExpertModel>(
-      ApiEndpoints.getExpertStats(userId),
-      fromJson: (data) => ExpertModel.fromJson(data),
-    );
+    final response = await get<ExpertModel>(ApiEndpoints.getExpertStats(userId),
+        fromJson: (data) => ExpertModel.fromJson(data), isDirectJson: true);
+
+    return response;
+  }
+
+  Future<ApiResponse<Map<String, dynamic>>> getExpertPayout({
+    required String userId,
+  }) async {
+    final response = await get<Map<String, dynamic>>(
+        ApiEndpoints.getPayout(userId),
+        fromJson: (data) => data as Map<String, dynamic>,
+        isDirectJson: true);
 
     return response;
   }
